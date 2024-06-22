@@ -7,6 +7,7 @@ import pandas as pd
 from sklearn.preprocessing import StandardScaler
 from sklearn.impute import SimpleImputer
 from sklearn.pipeline import Pipeline
+from imblearn.over_sampling import SMOTE
 
 from src.exception import CustomException
 from src.logger import logging
@@ -59,10 +60,11 @@ class DataTransformation:
             logging.info("Applying preprocessing object on training dataframe and testing dataframe.")
 
             input_feature_train_arr = preprocessor.fit_transform(input_feature_train_df)
+            input_feature_train_arr_resampled, target_feature_train_df_resampled = SMOTE().fit_resample(input_feature_train_arr, target_feature_train_df)
             input_feature_test_arr = preprocessor.transform(input_feature_test_df)
 
             train_arr = np.c_[
-                input_feature_train_arr, np.array(target_feature_train_df)
+                input_feature_train_arr_resampled, np.array(target_feature_train_df_resampled)
             ]
             test_arr = np.c_[input_feature_test_arr, np.array(target_feature_test_df)]
 

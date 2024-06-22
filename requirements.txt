@@ -6,4 +6,5 @@ scikit-learn
 dill
 pydantic
 fastapi
+imbalanced-learn
 #-e .
