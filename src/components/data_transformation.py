@@ -10,7 +10,7 @@ from sklearn.pipeline import Pipeline
 
 from src.exception import CustomException
 from src.logger import logging
-from src.utils import save_processor
+from src.utils import save_object
 
 
 @dataclass
@@ -48,11 +48,6 @@ class DataTransformation:
 
             preprocessor = self.get_data_transformer_object()
 
-            save_processor(
-                file_path=self.data_transformation_config.preprocessor_obj_file_path,
-                obj=preprocessor
-            )
-
             target_column_name = "DefectStatus"
 
             input_feature_train_df = train_df.drop(columns=[target_column_name], axis=1)
@@ -70,6 +65,11 @@ class DataTransformation:
                 input_feature_train_arr, np.array(target_feature_train_df)
             ]
             test_arr = np.c_[input_feature_test_arr, np.array(target_feature_test_df)]
+
+            save_object(
+                file_path=self.data_transformation_config.preprocessor_obj_file_path,
+                obj=preprocessor
+            )
 
             logging.info("Saved preprocessing object.")
 
